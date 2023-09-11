@@ -21,4 +21,12 @@ export class CompanyService {
   saveCompany(company: Company) {
     this.companyRef.set(company);
   }
+
+  editCompany(company: any) {
+    this.companyRef.update(company);
+  }
+
+  deleteCompany() {
+    this.companyRef.delete();
+  }
 }
