@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { AngularFirestore } from "@angular/fire/compat/firestore";
 import { Observable } from 'rxjs';
 import { Company } from '../../models/company';
 import { CompanyService } from '../company.service';
@@ -11,15 +10,15 @@ import { CompanyService } from '../company.service';
 })
 export class CompanyEditComponent implements OnInit {
 
-  company$: Observable<Company> | any
+  company$: Observable<Company>;
 
   constructor(private companyService: CompanyService) {
-    this.company$ = this.companyService.getCompanyObservable()
+    this.company$ = this.companyService.getCompanyObservable();
   }
 
   ngOnInit() {}
 
-  saveCompany(company) {
+  saveCompany(company: Company) {
     this.companyService.saveCompany(company);
   }
 

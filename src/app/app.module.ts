@@ -1,18 +1,21 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
 import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatToolbarModule } from "@angular/material/toolbar";
+
+import { AppComponent } from './app.component';
 import { environment} from "../../environment";
+import { CompanyEditComponent } from './company/company-edit/company-edit.component'
+
 import { AngularFireModule } from "@angular/fire/compat";
 import { AngularFirestoreModule } from "@angular/fire/compat/firestore";
 import { FlexLayoutModule } from "@angular/flex-layout";
-import { CompanyEditComponent } from './company/company-edit/company-edit.component'
+import { MatToolbarModule } from "@angular/material/toolbar";
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+
 import { FormsModule } from '@angular/forms';
 
 @NgModule({
@@ -31,6 +34,7 @@ import { FormsModule } from '@angular/forms';
     MatCardModule, 
     MatButtonModule,
     MatFormFieldModule,
+    MatInputModule,
     FormsModule,
   ],
   providers: [],
