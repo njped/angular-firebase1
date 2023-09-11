@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Company } from '../models/company';
+import { Contact } from '../models/contact';
 import { Observable, catchError, from, map, of, pipe, tap, throwError } from 'rxjs';
 import { 
   AngularFirestore, 
@@ -11,29 +11,29 @@ import {
 @Injectable({
   providedIn: 'root'
 })
-export class CompanyService {
+export class ContactService {
 
-  private companiesRef: AngularFirestoreCollection<Company>;
-  private companyRef: AngularFirestoreDocument
+  private contactsRef: AngularFirestoreCollection<Contact>;
+  private contactRef: AngularFirestoreDocument
 
   constructor(private db: AngularFirestore) {
-    this.companiesRef = this.db.collection<Company>('companies');
-    this.companyRef = this.db.doc<Company>('companies/company')
+    this.contactsRef = this.db.collection<Contact>('contacts');
+    this.contactRef = this.db.doc<Contact>('contacts/contact')
   }
 
-  getCompanyObservable(id: string | null): Observable<Company | undefined>  {
-    return this.db.doc<Company>(`companies/${id}`)
+  getContactObservable(id: string | null): Observable<Contact | undefined>  {
+    return this.db.doc<Contact>(`contacts/${id}`)
     .valueChanges()
     .pipe(
       catchError(this.errorHandler)
     )
   }
 
-  getCompaniesObservable(): Observable<Company[]> {
-    return this.companiesRef.snapshotChanges()
+  getCompaniesObservable(): Observable<Contact[]> {
+    return this.contactsRef.snapshotChanges()
       .pipe(
-        map((items: DocumentChangeAction<Company>[]): Company[] => {
-          return items.map((item: DocumentChangeAction<Company>): Company => {
+        map((items: DocumentChangeAction<Contact>[]): Contact[] => {
+          return items.map((item: DocumentChangeAction<Contact>): Contact => {
             return {
               id: item.payload.doc.id,
               name: item.payload.doc.data().name,
@@ -46,8 +46,8 @@ export class CompanyService {
   }
 
   // ONLY FOR DOCUMENT IMPLENTMENTATION
-  // saveCompany(company: Company) {
-  //   from(this.company.set(company))
+  // saveContact(contact: Contact) {
+  //   from(this.contact.set(contact))
   //     .pipe(
   //       catchError(err => {
   //         console.log('set', err);
@@ -56,15 +56,15 @@ export class CompanyService {
   //     )
   // }
 
-  saveCompany(company: Company) {
-    return this.companiesRef.add(company)
+  saveContact(contact: Contact) {
+    return this.contactsRef.add(contact)
       .then(_ => console.log('success on add'))
       .catch(error => console.log('add', error));
   }
 
   // ONLY FOR DOCUMENT IMPLENTMENTATION
-  // editCompany(company: any) {
-  //   from(this.companyRef.update(company))
+  // editContact(contact: any) {
+  //   from(this.contactRef.update(contact))
   //     .pipe(
   //       catchError(err => {
   //         console.log('edit', err);
@@ -73,15 +73,15 @@ export class CompanyService {
   //     )
   // }
 
-    editCompany(company: Company) {
-    return this.companiesRef.doc(company.id).update(company)
+    editContact(contact: Contact) {
+    return this.contactsRef.doc(contact.id).update(contact)
       .then(_ => console.log('Success on update'))
       .catch(error => console.log('update', error));
   }
 
-  deleteCompany(id: string) {
+  deleteContact(id: string) {
     id ? id : ''
-    return this.companiesRef.doc(id).delete()
+    return this.contactsRef.doc(id).delete()
       .then(_ => console.log('Success on delete'))
       .catch(error => console.log('delete', error));
   }

@@ -4,8 +4,8 @@
     <input type="text" matInput [(ngModel)]="company.name">
   </mat-form-field>
   <mat-card-actions align="start">
-    <button mat-raised-button color="primary" (click)="saveCompany(company)">Save</button>
-    <button mat-raised-button (click)="editCompany(company)" style="margin-left: 10px;">Edit</button>
-    <button mat-raised-button (click)="deleteCompany()" style="margin-left: 10px;">Delete</button>
+    <button mat-raised-button *ngIf="isNew" color="primary" (click)="saveCompany(company)">Save</button>
+    <button mat-raised-button *ngIf="!isNew" (click)="editCompany(company)" style="margin-left: 10px;">Edit</button>
+    <button mat-raised-button color="warn" (click)="deleteCompany()" style="margin-left: 10px;">Delete</button>
   </mat-card-actions>
 </mat-card>
