@@ -6,6 +6,7 @@ import {
   AngularFirestoreDocument, 
   AngularFirestoreCollection, 
   DocumentChangeAction,
+  CollectionReference,
 } from '@angular/fire/compat/firestore';
 
 @Injectable({
@@ -29,13 +30,18 @@ export class ContactService {
     )
   }
 
-  getCompaniesObservable(): Observable<Contact[]> {
-    return this.contactsRef.snapshotChanges()
+  getContactsObservable(companyId: string | null): Observable<Contact[]> {
+    const filteredContacts = companyId != null ?
+      this.db.collection<Contact>('contacts', (ref: CollectionReference) => ref.where('companyId', '==', companyId))
+      : this.contactsRef;
+
+    return filteredContacts.snapshotChanges()
       .pipe(
         map((items: DocumentChangeAction<Contact>[]): Contact[] => {
           return items.map((item: DocumentChangeAction<Contact>): Contact => {
             return {
               id: item.payload.doc.id,
+              companyId: item.payload.doc.data().companyId,
               name: item.payload.doc.data().name,
               phone: item.payload.doc.data().phone
             };
@@ -44,6 +50,7 @@ export class ContactService {
         catchError(this.errorHandler)
       );
   }
+
 
   // ONLY FOR DOCUMENT IMPLENTMENTATION
   // saveContact(contact: Contact) {

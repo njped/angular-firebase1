@@ -3,6 +3,8 @@ import { Observable, of } from 'rxjs';
 import { Contact } from '../../models/contact';
 import { ContactService } from '../contact.service';
 import { ActivatedRoute, Route, Router } from '@angular/router';
+import { CompanyService } from 'src/app/company/company.service';
+import { Company } from 'src/app/models/company';
 
 @Component({
   selector: 'app-contact-edit',
@@ -12,12 +14,16 @@ import { ActivatedRoute, Route, Router } from '@angular/router';
 export class ContactEditComponent implements OnInit {
 
   contact$: Observable<Contact | undefined> 
+  companies$: Observable<Company[] | undefined> 
+
 
   constructor(
     private contactService: ContactService,
     private activatedRoute: ActivatedRoute,
-    private router: Router  
+    private router: Router,
+    private companyService: CompanyService  
     ) {
+      this.companies$ = companyService.getCompaniesObservable();
       if (!this.isNew) {
         this.contact$ = contactService.getContactObservable(this.id);
       } else {
@@ -40,12 +46,9 @@ export class ContactEditComponent implements OnInit {
   }
 
   editContact(contact: Contact) {
-    this.id ? contact.id = this.id : "default";
-    console.log("Contact: " + JSON.stringify(contact))
-    this.contactService.editContact(contact)
-    .then(() => {
-      this.router.navigate(['/contact/all'])
-    })
+    this.id ? contact.id = this.id : ""
+    this.contactService.editContact(contact) // step 4
+      .then(_ => this.router.navigate(['/contact/all']));
   }
 
   deleteContact() {
